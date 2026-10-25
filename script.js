@@ -26,14 +26,21 @@ const notificationsData = [
     app: 'Messages',
     icon: '💬',
     title: 'Ohyul',
-    body: 'Are you coming tonight? We need to talk.',
+    body: 'lu jd dateng?',
+    delay: 2500
+  },
+  {
+    app: 'Messages',
+    icon: '💬',
+    title: 'Louis',
+    body: 'lu dmn weh',
     delay: 1500
   },
   {
-    app: 'Instagram',
-    icon: '📸',
-    title: 'New Tag',
-    body: 'tagged you in a photo.',
+    app: 'Messages',
+    icon: '💬',
+    title: 'Ohyul',
+    body: 'lu udh mau otw?',
     delay: 4500
   }
 ];
@@ -165,7 +172,7 @@ if (lockScreen) {
 
   lockScreen.addEventListener('touchend', (e) => {
     let endY = e.changedTouches[0].clientY;
-    if (startY - endY > 50) {
+    if (startY - endY > 40) {
       showPasscodeScreen();
     }
   });
@@ -178,14 +185,45 @@ const swipeHint = document.querySelector('.swipe-hint');
 if (homeBar) homeBar.addEventListener('click', showPasscodeScreen);
 if (swipeHint) swipeHint.addEventListener('click', showPasscodeScreen);
 
+
 // ==========================================
 // 5. MESSAGES NAVIGATION & SWIPE
 // ==========================================
+// Data store for individual chatrooms
+const chatData = {
+  Ohyul: {
+    initialMessages: [
+      { text: "Lu jd dateng?", type: "received" },
+      { text: "Lu udh mau otw?", type: "received" }
+    ],
+    script: [
+      { userText: ["iye. nanya mulu dah ky tokek", "bntr lg sampe"], replyText: "anying", delay: 2000 },
+      { userText: "lu dmn", replyText: "backstage sm anak2", delay: 2500 },
+      { userText: "otwww", replyText: "ok", delay: 800 }
+    ],
+    scriptIndex: 0,
+    subTextIndex: 0
+  },
+  Louis: {
+    initialMessages: [
+      { text: "lu dmn weh", type: "received" }
+    ],
+    script: [
+      { userText: "otw", replyText: "bareng bang acil?", delay: 2500 },
+      { userText: "kaga", replyText: "oh ook", delay: 800 }
+    ],
+    scriptIndex: 0,
+    subTextIndex: 0
+  }
+};
+
+
 const messagesScreen = document.getElementById("messagesScreen");
 const chatroomView = document.getElementById("chatroomView");
 const backToContactsBtn = document.getElementById("backToContacts");
 const activeChatName = document.getElementById("activeChatName");
 const messagesHomeBar = document.getElementById("messagesHomeBar");
+
 
 // Open Messages App
 document.addEventListener("click", (e) => {
@@ -205,11 +243,28 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Select Contact -> Opens Chatroom
+// Select Contact -> Opens Chatroom & Loads Contact Chat
 document.querySelectorAll(".message-thread").forEach(thread => {
   thread.addEventListener("click", () => {
-    const contactName = thread.getAttribute("data-contact") || "Contact";
+    const contactName = thread.getAttribute("data-contact") || "Ohyul";
+    currentContact = contactName;
+    charIndex = 0; // Reset typing index for the new contact
+    if (chatInput) chatInput.value = ""; // Clear input bar
+
+    // 1. Update Header Name
     if (activeChatName) activeChatName.textContent = contactName;
+
+    // 2. Update Header Avatar
+    const activeAvatarImg = document.getElementById("activeChatAvatar") || document.querySelector(".chat-header-avatar img");
+    let avatarUrl = thread.getAttribute("data-avatar");
+    if (activeAvatarImg && avatarUrl && avatarUrl.trim() !== "") {
+      activeAvatarImg.src = avatarUrl;
+    }
+
+    // 3. Render this contact's unique chat history
+    renderChatMessages(contactName);
+
+    // 4. Open Chatroom
     if (chatroomView) {
       chatroomView.style.transform = "";
       chatroomView.classList.remove("is-dragging");
@@ -217,6 +272,26 @@ document.querySelectorAll(".message-thread").forEach(thread => {
     }
   });
 });
+
+
+// Helper function to render messages into container
+function renderChatMessages(contact) {
+  if (!chatMessagesContainer) return;
+  chatMessagesContainer.innerHTML = "";
+
+  const contactInfo = chatData[contact];
+  if (!contactInfo) return;
+
+  contactInfo.initialMessages.forEach(msg => {
+    const bubble = document.createElement("div");
+    bubble.className = `message-bubble ${msg.type}`;
+    bubble.textContent = msg.text;
+    chatMessagesContainer.appendChild(bubble);
+  });
+
+  chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+}
+
 
 // Back to Contacts List Button
 if (backToContactsBtn) {
@@ -299,44 +374,142 @@ updateClock();
 setInterval(updateClock, 1000);
 startNotifications();
 
-
 // ==========================================
-// DEV MODE: STAYS OPEN IN FIRST CHATROOM
+// 6. SCRIPTED FAKE TYPING & TIMER REPLY LOGIC
 // ==========================================
-function enableDevMode() {
-  const messagesScreen = document.getElementById("messagesScreen");
-  const chatroomView = document.getElementById("chatroomView");
-  const activeChatName = document.getElementById("activeChatName");
-  const lockScreen = document.getElementById("lockScreen");
-  const passcodeScreen = document.getElementById("passcodeScreen");
+const chatInput = document.getElementById("chatInput") || document.querySelector(".chat-input-bar input");
+const iosKeyboard = document.getElementById("iosKeyboard");
+const chatInputBar = document.querySelector(".chat-input-bar");
+const sendBtn = document.getElementById("sendMsgBtn") || document.querySelector(".send-btn");
+const chatMessagesContainer = document.getElementById("chatMessagesContainer") || document.querySelector(".chat-messages-container");
 
-  // Force Hide Overlays
-  if (lockScreen) {
-    lockScreen.style.display = "none";
-    lockScreen.style.pointerEvents = "none";
-  }
-  if (passcodeScreen) {
-    passcodeScreen.style.display = "none";
-    passcodeScreen.style.pointerEvents = "none";
-  }
+// CONVERSATION FLOW SCRIPT:
+// Set your scripted user messages and Ohyul's replies here in sequence!
+// Helper: Get active script target text for the current contact
+function getCurrentTargetText() {
+  const activeData = chatData[currentContact];
+  if (!activeData || activeData.scriptIndex >= activeData.script.length) return "";
 
-  // Force Open Messages App
-  if (messagesScreen) {
-    messagesScreen.style.transform = "translateX(0)";
-    messagesScreen.style.opacity = "1";
-    messagesScreen.style.pointerEvents = "auto";
-    messagesScreen.style.visibility = "visible";
-    messagesScreen.classList.add("active");
+  const rawUserText = activeData.script[activeData.scriptIndex].userText;
+  if (Array.isArray(rawUserText)) {
+    return rawUserText[activeData.subTextIndex] || "";
   }
-
-  // Force Open Chatroom
-  if (chatroomView) {
-    chatroomView.style.transform = "translateX(0)";
-    chatroomView.classList.add("active");
-  }
-
-  if (activeChatName) activeChatName.textContent = "Ohyul";
+  return rawUserText;
 }
 
-// Run Dev Mode
-enableDevMode();
+if (chatInput && iosKeyboard) {
+  // 1. Open Keyboard Virtual
+  chatInput.addEventListener("click", (e) => {
+    e.stopPropagation();
+    iosKeyboard.classList.add("active");
+    if (chatInputBar) chatInputBar.classList.add("keyboard-open");
+  });
+
+  // 2. Close Keyboard when tapping background chat
+  if (chatMessagesContainer) {
+    chatMessagesContainer.addEventListener("click", () => {
+      iosKeyboard.classList.remove("active");
+      if (chatInputBar) chatInputBar.classList.remove("keyboard-open");
+    });
+  }
+
+  // 3. Fake Typing Effect: Any key punch outputs the pre-scripted sentence for the active contact
+  document.querySelectorAll(".key").forEach((key) => {
+    key.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      const activeData = chatData[currentContact];
+      if (!activeData) return;
+
+      const currentTargetText = getCurrentTargetText();
+      if (!currentTargetText) return;
+
+      if (key.id === "keyDelete") {
+        if (charIndex > 0) {
+          charIndex--;
+          chatInput.value = currentTargetText.substring(0, charIndex);
+        }
+      } else if (key.id === "keyReturn") {
+        sendMessage();
+      } else {
+        if (charIndex < currentTargetText.length) {
+          charIndex++;
+          chatInput.value = currentTargetText.substring(0, charIndex);
+        }
+      }
+    });
+  });
+
+  // Send Message & Trigger Contact's Typing Indicator + Reply
+  function sendMessage() {
+    const text = chatInput.value.trim();
+    if (!text) return;
+
+    const activeData = chatData[currentContact];
+
+    // A. Post user bubble
+    const userBubble = document.createElement("div");
+    userBubble.className = "message-bubble sent";
+    userBubble.textContent = text;
+    chatMessagesContainer.appendChild(userBubble);
+
+    if (activeData) {
+      activeData.initialMessages.push({ text: text, type: "sent" });
+    }
+
+    chatInput.value = "";
+    charIndex = 0;
+    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+
+    if (!activeData) return;
+
+    const currentStep = activeData.script[activeData.scriptIndex];
+    const rawUserText = currentStep ? currentStep.userText : null;
+
+    if (Array.isArray(rawUserText) && activeData.subTextIndex < rawUserText.length - 1) {
+      activeData.subTextIndex++;
+      return; 
+    }
+
+    if (activeData.scriptIndex < activeData.script.length) {
+      activeData.subTextIndex = 0;
+      activeData.scriptIndex++;
+    }
+
+    // B. Trigger contact's typing bubble & delayed reply
+    if (currentStep && currentStep.replyText) {
+      setTimeout(() => {
+        const typingBubble = document.createElement("div");
+        typingBubble.className = "typing-indicator";
+        typingBubble.id = "activeTypingIndicator";
+        typingBubble.innerHTML = `
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        `;
+        chatMessagesContainer.appendChild(typingBubble);
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+      }, 400);
+
+      setTimeout(() => {
+        const indicator = document.getElementById("activeTypingIndicator");
+        if (indicator) indicator.remove();
+
+        const replyBubble = document.createElement("div");
+        replyBubble.className = "message-bubble received";
+        replyBubble.textContent = currentStep.replyText;
+
+        chatMessagesContainer.appendChild(replyBubble);
+        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+
+        if (activeData) {
+          activeData.initialMessages.push({ text: currentStep.replyText, type: "received" });
+        }
+      }, currentStep.delay);
+    }
+  }
+
+  if (sendBtn) {
+    sendBtn.addEventListener("click", sendMessage);
+  }
+}
