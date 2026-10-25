@@ -769,7 +769,3 @@ body {
 .dots-container.shake {
   animation: shakeDots 0.4s ease-in-out;
 }
-
-
-/* TEMPORARY DEV MODE: Forces Home Screen to stay visible */
-.lock-screen, .passcode-screen { display: none !important; }
