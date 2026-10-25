@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>iPhone Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Physical iPhone Container Frame -->
+  <div class="iphone-container">
+    
+    <!-- 1. HOME SCREEN LAYER -->
+    <div class="home-screen" id="homeScreen">
+      
+      <!-- Top Status Bar (Dark Text for Light Wallpapers) -->
+      <div class="status-bar dark-text">
+        <span class="time-small">16:33</span>
+        <div class="status-icons">
+          <span>5G</span>
+          <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon" alt="Battery">
+        </div>
+      </div>
+
+
+
+      <!-- Main App Grid -->
+<div class="app-grid">
+
+  <!-- 1. TOP-LEFT WIDGET (Weather) -->
+  <div class="ios-widget weather-widget">
+    <div class="widget-header">Jakarta</div>
+    <div class="widget-temp">29°</div>
+    <div class="widget-desc">Mostly Sunny</div>
+  </div>
+
+  <!-- 2. APPS (Top-Right & Middle Slots) -->
+  <div class="app-icon" id="app-messages">
+    <span class="badge">5</span>
+    <div class="icon-box messages-icon">💬</div>
+    <span class="app-name">Messages</span>
+  </div>
+
+  
+  <div class="app-icon" id="app-instagram">
+    <div class="icon-box instagram-icon">📸</div>
+    <span class="app-name">Instagram</span>
+  </div>
+
+  
+  <div class="app-icon" id="app-photos">
+    <div class="icon-box photos-icon">🖼️</div>
+    <span class="app-name">Photos</span>
+  </div>
+
+  
+  <div class="app-icon" id="app-notes">
+    <div class="icon-box notes-icon">📝</div>
+    <span class="app-name">Notes</span>
+  </div>
+
+  
+  <div class="app-icon" id="app-maps">
+    <div class="icon-box maps-icon">🗺️</div>
+    <span class="app-name">Maps</span>
+  </div>
+
+  
+  <div class="app-icon" id="app-camera">
+    <div class="icon-box camera-icon">📷</div>
+    <span class="app-name">Camera</span>
+  </div>
+
+  <!-- 3. BOTTOM-RIGHT WIDGET (Music) -->
+  <div class="ios-widget music-widget">
+    <div class="music-art-container">
+      <img src="https://i.ibb.co.com/mVXb97cM/IMG-1116.png" class="album-art" alt="Album Cover">
+    </div>
+    <div class="music-info">
+      <div class="song-title">Cry</div>
+      <div class="artist-name">Cigarettes After Sex</div>
+    </div>
+    <div class="music-progress-container">
+      <div class="music-progress-bar"></div>
+    </div>
+    <div class="music-controls">
+      <button class="music-btn">⏮</button>
+      <button class="music-btn">!!</button>
+      <button class="music-btn">></button>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Home Screen Bottom Dock -->
+      <div class="dock-container">
+        <div class="dock-icon phone-dock">📞</div>
+        <div class="dock-icon safari-dock">🌐</div>
+        <div class="dock-icon messages-dock">💬</div>
+        <div class="dock-icon music-dock">🎵</div>
+      </div>
+
+      <!-- Bottom Home Indicator Bar -->
+      <div class="home-indicator dark-indicator"></div>
+
+    </div>
+
+    <!-- 2. PASSCODE SCREEN LAYER -->
+    <div class="passcode-screen" id="passcodeScreen">
+      <div class="status-bar">
+        <span class="time-small">16:33</span>
+        <div class="status-icons">
+          <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon" alt="Battery">
+        </div>
+      </div>
+
+      <div class="passcode-container">
+        <div class="passcode-title">Enter Passcode</div>
+        
+        <div class="dots-container" id="dotsContainer">
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+
+        <div class="keypad-grid">
+          <button class="key-btn" data-val="1">1</button>
+          <button class="key-btn" data-val="2">2</button>
+          <button class="key-btn" data-val="3">3</button>
+          <button class="key-btn" data-val="4">4</button>
+          <button class="key-btn" data-val="5">5</button>
+          <button class="key-btn" data-val="6">6</button>
+          <button class="key-btn" data-val="7">7</button>
+          <button class="key-btn" data-val="8">8</button>
+          <button class="key-btn" data-val="9">9</button>
+          <div class="key-placeholder"></div>
+          <button class="key-btn" data-val="0">0</button>
+          <button class="key-action-btn" id="cancelBtn">Cancel</button>
+        </div>
+      </div>
+
+      <div class="home-indicator"></div>
+    </div>
+
+    <!-- 3. LOCK SCREEN LAYER -->
+    <div class="lock-screen" id="lockScreen">
+      <div class="status-bar">
+        <span class="time-small">16:33</span>
+        <div class="status-icons">
+          <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon" alt="Battery">
+        </div>
+      </div>
+
+      <div class="lock-header">
+        <div class="lock-icon">🔒</div>
+        <div class="clock-widget">
+          <div id="date-display">Sunday, Oct 25</div>
+          <div id="time-display">16:33</div>
+        </div>
+      </div>
+
+      <div class="notifications-container" id="notifications-list"></div>
+
+      <div class="lock-footer">
+        <div class="quick-actions">
+          <button class="action-btn" title="Flashlight">🔦</button>
+          <button class="action-btn" title="Camera">📷</button>
+        </div>
+        <div class="swipe-hint">Swipe up to unlock</div>
+        <div class="home-indicator" id="homeBar"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
