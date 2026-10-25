@@ -75,7 +75,7 @@
   <!-- 3. BOTTOM-RIGHT WIDGET (Music) -->
   <div class="ios-widget music-widget">
     <div class="music-art-container">
-      <img src="https://i.ibb.co.com/mVXb97cM/IMG-1116.png" class="album-art" alt="Album Cover">
+      <img src="https://i.ibb.co.com/qL6n9SPB/IMG-1118.png" class="album-art" alt="Album Cover">
     </div>
     <div class="music-info">
       <div class="song-title">Cry</div>
@@ -85,7 +85,7 @@
       <div class="music-progress-bar"></div>
     </div>
     <div class="music-controls">
-      <button class="music-btn">⏮</button>
+      <button class="music-btn"><</button>
       <button class="music-btn">!!</button>
       <button class="music-btn">></button>
     </div>
@@ -173,7 +173,120 @@
       </div>
     </div>
 
+      <!-- MESSAGES APP OVERLAY -->
+  <div class="app-screen" id="messagesScreen">
+    <!-- Status Bar -->
+    <div class="status-bar dark-text">
+      <span>19:43</span>
+      <div class="status-icons">
+        <span>5G</span>
+        <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon dark-indicator" alt="Battery">
+      </div>
+    </div>
+
+    <!-- LEVEL 1: CONTACTS / CONVERSATIONS LIST -->
+    <div class="messages-list-view" id="messagesListView">
+      <div class="app-navbar">
+        <span class="app-nav-title">Messages</span>
+        <div class="nav-action-icon">✏️</div>
+      </div>
+
+      <div class="messages-content">
+        <!-- Contact Thread 1 -->
+        <div class="message-thread" data-contact="Ohyul">
+          <div class="avatar"></div>
+          <div class="thread-info">
+            <div class="thread-header">
+              <span class="contact-name">Ohyul</span>
+              <span class="thread-time">22:04</span>
+            </div>
+            <p class="thread-snippet">Are you coming tonight? We need to talk.</p>
+          </div>
+        </div>
+
+        <!-- Contact Thread 2 -->
+        <div class="message-thread" data-contact="Louis">
+          <div class="avatar avatar-louis">L</div>
+          <div class="thread-info">
+            <div class="thread-header">
+              <span class="contact-name">Louis</span>
+              <span class="thread-time">Yesterday</span>
+            </div>
+            <p class="thread-snippet">Are we still meeting up tomorrow?</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL 2: INDIVIDUAL CHATROOM (Slides in from right) -->
+  
+<!-- LEVEL 2: INDIVIDUAL CHATROOM -->
+<div id="chatroomView" class="chatroom-view">
+  
+  <!-- 1. TOP NAVBAR -->
+  <div class="chat-navbar">
+    <button id="backToContacts" class="nav-back-btn">‹</button>
+    
+    <div class="chat-header-contact">
+      <div class="chat-header-avatar">
+        <img id="activeChatAvatar" src="https://i.ibb.co.com/ynY8kjxD/IMG-1161.jpg" alt="Profile" />
+      </div>
+      <span id="activeChatName" class="chat-header-name">Ohyul</span>
+    </div>
+    
+    <div class="nav-actions">
+    </div>
   </div>
+
+  <!-- 2. MESSAGES AREA -->
+  <div class="chat-messages-container">
+    <div class="message-bubble received">Can I talk to you?</div>
+    <div class="message-bubble sent">Yep, almost there!</div>
+  </div>
+
+  <!-- 3. INPUT BAR -->
+  <div class="chat-input-bar">
+    <input type="text" placeholder="iMessage" />
+    <button class="send-btn">↑</button>
+  </div>
+
+</div>
+
+
+
+      <!-- Chat Messages Stream -->
+      <div class="chat-messages-container" id="chatMessagesContainer">
+        <div class="message-bubble received">
+          Can I talk to you?
+        </div>
+        <div class="message-bubble sent">
+          Yep, almost there!
+        </div>
+      </div>
+
+      <!-- Message Input Bar -->
+      <div class="chat-input-bar">
+        <input type="text" id="chatInput" placeholder="iMessage" />
+        <button id="sendMsgBtn">↑</button>
+      </div>
+    </div>
+
+    <!-- Home Bar Indicator -->
+    <div class="app-home-bar-container" id="messagesHomeBar">
+      <div class="home-indicator dark-indicator"></div>
+    </div>
+  </div>
+
+</div> <!-- End of .iphone-container -->
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+  </div>
+
+  
 
   <script src="script.js"></script>
 </body>
