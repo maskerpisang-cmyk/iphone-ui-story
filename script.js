@@ -189,6 +189,9 @@ if (swipeHint) swipeHint.addEventListener('click', showPasscodeScreen);
 // ==========================================
 // 5. MESSAGES NAVIGATION & SWIPE
 // ==========================================
+let currentContact = "Ohyul";
+let charIndex = 0;
+
 // Data store for individual chatrooms
 const chatData = {
   Ohyul: {
@@ -216,6 +219,7 @@ const chatData = {
     subTextIndex: 0
   }
 };
+
 
 
 const messagesScreen = document.getElementById("messagesScreen");
@@ -383,8 +387,6 @@ const chatInputBar = document.querySelector(".chat-input-bar");
 const sendBtn = document.getElementById("sendMsgBtn") || document.querySelector(".send-btn");
 const chatMessagesContainer = document.getElementById("chatMessagesContainer") || document.querySelector(".chat-messages-container");
 
-// CONVERSATION FLOW SCRIPT:
-// Set your scripted user messages and Ohyul's replies here in sequence!
 // Helper: Get active script target text for the current contact
 function getCurrentTargetText() {
   const activeData = chatData[currentContact];
@@ -396,6 +398,78 @@ function getCurrentTargetText() {
   }
   return rawUserText;
 }
+// Send Message & Trigger Contact's Typing Indicator + Reply
+function sendMessage() {
+  const activeData = chatData[currentContact];
+  if (!activeData) return;
+
+  const currentTargetText = getCurrentTargetText();
+  
+  // Prevent sending if text isn't finished typing yet
+  if (charIndex < currentTargetText.length) {
+    return;
+  }
+
+  const text = chatInput.value.trim();
+  if (!text) return;
+
+  // A. Post user bubble
+  const userBubble = document.createElement("div");
+  userBubble.className = "message-bubble sent";
+  userBubble.textContent = text;
+  chatMessagesContainer.appendChild(userBubble);
+
+  activeData.initialMessages.push({ text: text, type: "sent" });
+
+  chatInput.value = "";
+  charIndex = 0;
+  chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+
+  const currentStep = activeData.script[activeData.scriptIndex];
+  if (!currentStep) return;
+
+  const rawUserText = currentStep.userText;
+
+  // If it's a multi-part array and there are more lines left, advance to the next line immediately!
+  if (Array.isArray(rawUserText) && activeData.subTextIndex < rawUserText.length - 1) {
+    activeData.subTextIndex++;
+    return; 
+  }
+
+  // Otherwise, reset subTextIndex, move to the next script turn, and trigger the reply
+  activeData.subTextIndex = 0;
+  activeData.scriptIndex++;
+
+  if (currentStep.replyText) {
+    setTimeout(() => {
+      const typingBubble = document.createElement("div");
+      typingBubble.className = "typing-indicator";
+      typingBubble.id = "activeTypingIndicator";
+      typingBubble.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      chatMessagesContainer.appendChild(typingBubble);
+      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    }, 400);
+
+    setTimeout(() => {
+      const indicator = document.getElementById("activeTypingIndicator");
+      if (indicator) indicator.remove();
+
+      const replyBubble = document.createElement("div");
+      replyBubble.className = "message-bubble received";
+      replyBubble.textContent = currentStep.replyText;
+
+      chatMessagesContainer.appendChild(replyBubble);
+      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+
+      activeData.initialMessages.push({ text: currentStep.replyText, type: "received" });
+    }, currentStep.delay || 1500);
+  }
+}
+
 
 if (chatInput && iosKeyboard) {
   // 1. Open Keyboard Virtual
@@ -413,7 +487,7 @@ if (chatInput && iosKeyboard) {
     });
   }
 
-  // 3. Fake Typing Effect: Any key punch outputs the pre-scripted sentence for the active contact
+   // 3. Fake Typing Effect: Any key punch outputs the pre-scripted sentence for the active contact
   document.querySelectorAll(".key").forEach((key) => {
     key.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -429,8 +503,11 @@ if (chatInput && iosKeyboard) {
           charIndex--;
           chatInput.value = currentTargetText.substring(0, charIndex);
         }
-      } else if (key.id === "keyReturn") {
-        sendMessage();
+      } else if (key.id === "return" || key.id === "keyReturn") {
+        // Only send if the full text has finished typing!
+        if (charIndex >= currentTargetText.length) {
+          sendMessage();
+        }
       } else {
         if (charIndex < currentTargetText.length) {
           charIndex++;
@@ -440,74 +517,7 @@ if (chatInput && iosKeyboard) {
     });
   });
 
-  // Send Message & Trigger Contact's Typing Indicator + Reply
-  function sendMessage() {
-    const text = chatInput.value.trim();
-    if (!text) return;
 
-    const activeData = chatData[currentContact];
-
-    // A. Post user bubble
-    const userBubble = document.createElement("div");
-    userBubble.className = "message-bubble sent";
-    userBubble.textContent = text;
-    chatMessagesContainer.appendChild(userBubble);
-
-    if (activeData) {
-      activeData.initialMessages.push({ text: text, type: "sent" });
-    }
-
-    chatInput.value = "";
-    charIndex = 0;
-    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-
-    if (!activeData) return;
-
-    const currentStep = activeData.script[activeData.scriptIndex];
-    const rawUserText = currentStep ? currentStep.userText : null;
-
-    if (Array.isArray(rawUserText) && activeData.subTextIndex < rawUserText.length - 1) {
-      activeData.subTextIndex++;
-      return; 
-    }
-
-    if (activeData.scriptIndex < activeData.script.length) {
-      activeData.subTextIndex = 0;
-      activeData.scriptIndex++;
-    }
-
-    // B. Trigger contact's typing bubble & delayed reply
-    if (currentStep && currentStep.replyText) {
-      setTimeout(() => {
-        const typingBubble = document.createElement("div");
-        typingBubble.className = "typing-indicator";
-        typingBubble.id = "activeTypingIndicator";
-        typingBubble.innerHTML = `
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-          <div class="typing-dot"></div>
-        `;
-        chatMessagesContainer.appendChild(typingBubble);
-        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-      }, 400);
-
-      setTimeout(() => {
-        const indicator = document.getElementById("activeTypingIndicator");
-        if (indicator) indicator.remove();
-
-        const replyBubble = document.createElement("div");
-        replyBubble.className = "message-bubble received";
-        replyBubble.textContent = currentStep.replyText;
-
-        chatMessagesContainer.appendChild(replyBubble);
-        chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
-
-        if (activeData) {
-          activeData.initialMessages.push({ text: currentStep.replyText, type: "received" });
-        }
-      }, currentStep.delay);
-    }
-  }
 
   if (sendBtn) {
     sendBtn.addEventListener("click", sendMessage);
