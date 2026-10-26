@@ -1564,4 +1564,4 @@ body {
    end of style.css
    ========================================== */
 /* TEMPORARY DEV MODE: Forces Home Screen to stay visible */
-.lock-screen, .passcode-screen { display: none !important; }
+/*.lock-screen, .passcode-screen { display: none !important; }
