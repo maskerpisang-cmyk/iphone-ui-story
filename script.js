@@ -523,3 +523,72 @@ if (chatInput && iosKeyboard) {
     sendBtn.addEventListener("click", sendMessage);
   }
 }
+
+// Instagram App Navigation
+// Open Instagram from Home Screen Icon
+const instagramAppIcon = document.getElementById('app-instagram');
+const instagramScreen = document.getElementById('instagramScreen');
+
+if (instagramAppIcon && instagramScreen) {
+  instagramAppIcon.addEventListener('click', () => {
+    instagramScreen.classList.add('active');
+  });
+}
+
+
+// Instagram Bottom Navigation Switching
+const igFeedView = document.getElementById('igFeedView');
+const igProfileView = document.getElementById('igProfileView');
+const igTabHome = document.getElementById('igTabHome');
+const igTabProfile = document.getElementById('igTabProfile');
+const instagramBackBtn = document.getElementById('instagramBackBtn');
+
+if (igTabProfile && igFeedView && igProfileView) {
+  igTabProfile.addEventListener('click', () => {
+    igFeedView.classList.remove('active');
+    igProfileView.classList.add('active');
+    igTabProfile.classList.add('active');
+    igTabHome.classList.remove('active');
+  });
+}
+
+if (igTabHome && igFeedView && igProfileView) {
+  igTabHome.addEventListener('click', () => {
+    igProfileView.classList.remove('active');
+    igFeedView.classList.add('active');
+    igTabHome.classList.add('active');
+    igTabProfile.classList.remove('active');
+  });
+}
+
+if (instagramBackBtn && igFeedView && igProfileView) {
+  instagramBackBtn.addEventListener('click', () => {
+    // Back button on profile returns to feed
+    igProfileView.classList.remove('active');
+    igFeedView.classList.add('active');
+    igTabHome.classList.add('active');
+    igTabProfile.classList.remove('active');
+  });
+}
+
+// Instagram Profile Grid Lightbox Logic
+const igGridItems = document.querySelectorAll('.ig-grid-item img');
+const igLightbox = document.getElementById('igLightbox');
+const igLightboxImg = document.getElementById('igLightboxImg');
+const igLightboxClose = document.getElementById('igLightboxClose');
+
+igGridItems.forEach(img => {
+  img.addEventListener('click', () => {
+    const imgSrc = img.getAttribute('src');
+    if (igLightbox && igLightboxImg) {
+      igLightboxImg.setAttribute('src', imgSrc);
+      igLightbox.classList.add('active');
+    }
+  });
+});
+
+if (igLightboxClose && igLightbox) {
+  igLightboxClose.addEventListener('click', () => {
+    igLightbox.classList.remove('active');
+  });
+}

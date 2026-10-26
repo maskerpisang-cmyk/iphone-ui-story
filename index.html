@@ -25,9 +25,11 @@
         <span class="time-small">16:33</span>
         <div class="status-icons">
           <span>5G</span>
-          <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon" alt="Battery">
+          <span class="battery-percentage">100%</span>
+          <div class="battery-icon"></div>
+            <div class="battery-level"></div>
+          </div>
         </div>
-      </div>
 
       <!-- Main App Grid -->
       <div class="app-grid">
@@ -106,10 +108,14 @@
 
     <!-- 2. PASSCODE SCREEN LAYER -->
     <div class="passcode-screen" id="passcodeScreen">
-      <div class="status-bar">
+      <div class="status-bar dark-text">
         <span class="time-small">16:33</span>
         <div class="status-icons">
-          <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon" alt="Battery">
+          <span>5G</span>
+        <div class="status-battery">
+          <span class="battery-percentage">100%</span>
+          <div class="battery-icon"></div>
+          </div>
         </div>
       </div>
 
@@ -147,7 +153,10 @@
       <div class="status-bar">
         <span class="time-small">16:33</span>
         <div class="status-icons">
-          <img src="https://i.ibb.co.com/MkFMNL6X/IMG-1092.png" class="battery-icon" alt="Battery">
+      <div class="signal-bar">
+        <span class="signal-small">5G</span></div>
+      <div class="battery-icon">
+        <span class="battery-small">100%</span></div>
         </div>
       </div>
 
@@ -271,6 +280,176 @@
       </div>
     </div>
 
+<!-- Instagram App Screen Overlay -->
+<!-- Instagram App Screen Overlay -->
+<div class="app-screen" id="instagramScreen">
+  <div class="status-bar dark-text">
+    <span>00:18</span>
+    <div class="status-icons">
+      <span>5G</span>
+      <span class="battery-percentage">100%</span>
+      <div class="battery-icon">
+        <div class="battery-level"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 1: HOME FEED VIEW (Default opening screen) -->
+  <div class="ig-sub-view ig-feed-container active" id="igFeedView">
+    <div class="ig-navbar">
+      <span class="ig-logo-text">Instagram</span>
+      <div class="ig-nav-icons">
+        <span>♡</span>
+        <span>✈️</span>
+      </div>
+    </div>
+    
+    <div class="ig-profile-scroll">
+
+      
+      <!-- Sample Post -->
+
+      
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar"><img src="https://i.ibb.co.com/mVTjnkH2/IMG-1375.jpg" alt="Avatar"></div>
+          <span class="ig-post-username">Kwon__ohyul</span>
+        </div>
+        <div class="ig-post-image">
+          <img src="https://i.ibb.co.com/FkNJHcqW/IMG-1093.jpg" alt="Post">
+        </div>
+        <div class="ig-post-actions">
+          <span>♡</span>
+          <span>💬</span>
+          <span>✈️</span>
+        </div>
+        <div class="ig-post-caption">
+          <b>Kwon__ohyul</b> studycase: modelling 101
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 2: PROFILE VIEW (Opens when clicking profile tab) -->
+  <div class="ig-sub-view ig-profile-container" id="igProfileView">
+    <div class="ig-navbar">
+      <button class="nav-back-btn" id="instagramBackBtn" style="font-size: 14px; color: #000;">‹ Back</button>
+      <span class="ig-username">kwon__ohyul</span>
+      <div class="ig-nav-icons">
+        <span>🔔</span>
+        <span>☰</span>
+      </div>
+    </div>
+
+    <div class="ig-profile-scroll">
+      <div class="ig-header-section">
+        <div class="ig-top-row">
+          <div class="ig-avatar-ring">
+            <img src="https://i.ibb.co.com/mVTjnkH2/IMG-1375.jpg" alt="Profile" class="ig-profile-img">
+          </div>
+          <div class="ig-stats">
+            <div class="ig-stat-item">
+              <span class="ig-stat-num">9</span>
+              <span class="ig-stat-label">Posts</span>
+            </div>
+            <div class="ig-stat-item">
+              <span class="ig-stat-num">1,240</span>
+              <span class="ig-stat-label">Followers</span>
+            </div>
+            <div class="ig-stat-item">
+              <span class="ig-stat-num">732</span>
+              <span class="ig-stat-label">Following</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="ig-bio-section">
+          <div class="ig-fullname">Kwon Ohyul</div>
+          <div class="ig-bio-text">filmmaker. sometimes model.<br> Jakarta</div>
+        </div>
+
+        <div class="ig-action-buttons">
+          <button class="ig-btn ig-btn-edit">Edit profile</button>
+          <button class="ig-btn ig-btn-share">Share profile</button>
+        </div>
+      </div>
+
+      <!-- highlight running -->
+
+      <div class="ig-highlights-row">
+        <div class="ig-highlight">
+          <div class="ig-hl-circle"><img src="https://i.ibb.co.com/ynkv0g2C/IMG-1358.jpg" alt="Profile" class="ig-profile-img"></div>
+          <span class="ig-hl-label">running</span>
+        </div>
+
+          <!-- highlight cafe -->
+        
+        <div class="ig-highlight">
+          <div class="ig-hl-circle"><img src="https://i.ibb.co.com/05QJNVH/21-C35341-7-FE1-4601-BA80-26-BC28-A0-A4-DA.jpg" alt="Profile" class="ig-profile-img"></div>
+          <span class="ig-hl-label">food</span>
+        </div>
+      </div>
+
+      <div class="ig-tabs-bar">
+        <div class="ig-tab active">
+          <svg aria-label="Posts" class="ig-tab-icon" fill="currentColor" height="24" viewBox="0 0 24 24" width="24"><path d="M12 9.5c1.38 0 2.5-1.12 2.5-2.5s-1.12-2.5-2.5-2.5-2.5 1.12-2.5 2.5 1.12 2.5 2.5 2.5zm0-6c1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5-3.5-1.57-3.5-3.5 1.57-3.5 3.5-3.5zm6.5 13.5c0 1.1-.9 2-2 2h-9c-1.1 0-2-.9-2-2v-9c0-1.1.9-2 2-2h9c1.1 0 2 .9 2 2v9zm-11-10c-.55 0-1 .45-1 1v9c0 .55.45 1 1 1h9c.55 0 1-.45 1-1v-9c0-.55-.45-1-1-1h-9z"/></svg>
+        </div>
+      </div>
+
+      <!-- feeds photogrid -->
+      
+      <div class="ig-photo-grid">
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/84ndkF6g/IMG-1362.jpg" alt="Post"></div>
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/TxyNrV60/IMG-1366.jpg" alt="Post"></div>
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/CsmSm69C/IMG-1364.jpg" alt="Post"></div>
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/LDrjG1MB/IMG-1363.jpg" alt="Post"></div>
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/BVf4RQrM/IMG-1365.jpg" alt="Post"></div>
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/P3JV0tH/IMG-1368.jpg.jpg" alt="Post"></div>
+        <div class="ig-grid-item"><img src="https://i.ibb.co.com/SDssgX47/IMG-1370.jpg" alt="Post"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Persistent Bottom Navigation Bar -->
+  <div class="ig-bottom-nav">
+    <div class="ig-bot-icon active" id="igTabHome">🏠</div>
+    <div class="ig-bot-icon">🔍</div>
+    <div class="ig-bot-icon">➕</div>
+    <div class="ig-bot-icon">🎦</div>
+    <div class="ig-bot-icon" id="igTabProfile">
+      <img src="https://i.ibb.co.com/FkNJHcqW/IMG-1093.jpg" alt="Me" class="ig-bot-avatar">
+    </div>
+  </div>
+</div>
+/div>
+
+    <!-- Instagram Fullscreen Photo Lightbox Modal -->
+    <div class="ig-lightbox" id="igLightbox">
+      <div class="ig-lightbox-header">
+        <button class="ig-lightbox-close" id="igLightboxClose">✕</button>
+        <span class="ig-lightbox-title">Post</span>
+      </div>
+      <div class="ig-lightbox-content">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar"><img src="https://i.ibb.co.com/FkNJHcqW/IMG-1093.jpg" alt="Avatar"></div>
+          <span class="ig-post-username">Kwon_ohyul</span>
+        </div>
+        <div class="ig-post-image">
+          <img id="igLightboxImg" src="" alt="Expanded Post">
+        </div>
+        <div class="ig-post-actions">
+          <span>♥️</span>
+          <span>🗨</span>
+          <span>➤</span>
+        </div>
+        <div class="ig-post-caption">
+          <b>Kwon__ohyul</b> ...
+        </div>
+      </div>
+    </div>
+
+
+    
   </div> <!-- End of .iphone-container -->
 
   <script src="script.js"></script>
